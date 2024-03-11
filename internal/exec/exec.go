@@ -195,7 +195,8 @@ func execFieldSelection(ctx context.Context, r *Request, f *fieldToExec, path *p
 		if f.field.UseMethodResolver() {
 			var in []reflect.Value
 			if f.field.HasContext {
-				in = append(in, reflect.ValueOf(traceCtx))
+				execCtx := WithField(traceCtx, Field{Alias: path.value.(string), Name: f.field.Name})
+				in = append(in, reflect.ValueOf(execCtx))
 			}
 			if f.field.ArgsPacker != nil {
 				in = append(in, f.field.PackedArgs)
